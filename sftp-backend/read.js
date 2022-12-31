@@ -7,7 +7,7 @@ var tree1 = browseDir.browse("node_modules");
 var tree2 = browseDir.browseFiles("node_modules");
 var tree3 = browseDir.browseDirs("node_modules");
 const dirTree = require("directory-tree");
-const tree = dirTree("../../Learning/wedding-invite");
+const tree = dirTree("../../../bio");
 
 let paths = [];
 let ext = ["\\.png", "\\.mp3", "\\.mp4"];
@@ -15,7 +15,7 @@ const processChildren = (array) => {
   for (let i = 0; i < array.length; i++) {
     ext.map((e) => {
       if (array[i].path.search(e) !== -1) {
-        paths.push(array[i].path);
+        paths.push(array[i].path.replace(/\\/g,'/'));
       }
     });
 
@@ -47,11 +47,11 @@ const listDirectory = (req, res) => {
 };
 
 const downloadFile = (req, res) => {
-  console.log("sdsdsdsdasdasdasda", req.body);
+  console.log("sdsdsdsdasdasdasda", req.body.filePath.split('/')[req.body.filePath.split('/').length-1]);
   let options = {
-    root: path.join("../../"),
+    root: path.join("../../../bio"),
   };
-  return res.sendFile(path.resolve(`${req.body.filePath}`), options, function (err) {
+  return res.sendFile(`/${req.body.filePath.split('/')[req.body.filePath.split('/').length-1]}`, options, function (err) {
     if (err) {
    console.log("err",err)
     } else {
